@@ -9,7 +9,7 @@ SERVER_NAME=`sed '/dubbo.application.name/!d;s/.*=//' conf/dubbo.properties | tr
 LOGS_FILE=`sed '/dubbo.log4j.file/!d;s/.*=//' conf/dubbo.properties | tr -d '\r'`
 
 if [ -z "$SERVER_NAME" ]; then
-	SERVER_NAME=`hostname`
+    SERVER_NAME=`hostname`
 fi
 
 PIDS=`ps -f | grep java | grep "$CONF_DIR" |awk '{print $2}'`
@@ -20,43 +20,43 @@ fi
 
 LOGS_DIR=""
 if [ -n "$LOGS_FILE" ]; then
-	LOGS_DIR=`dirname $LOGS_FILE`
+    LOGS_DIR=`dirname $LOGS_FILE`
 else
-	LOGS_DIR=$DEPLOY_DIR/logs
+    LOGS_DIR=$DEPLOY_DIR/logs
 fi
 if [ ! -d $LOGS_DIR ]; then
-	mkdir $LOGS_DIR
+    mkdir $LOGS_DIR
 fi
 DUMP_DIR=$LOGS_DIR/dump
 if [ ! -d $DUMP_DIR ]; then
-	mkdir $DUMP_DIR
+    mkdir $DUMP_DIR
 fi
 DUMP_DATE=`date +%Y%m%d%H%M%S`
 DATE_DIR=$DUMP_DIR/$DUMP_DATE
 if [ ! -d $DATE_DIR ]; then
-	mkdir $DATE_DIR
+    mkdir $DATE_DIR
 fi
 
 echo -e "Dumping the $SERVER_NAME ...\c"
 for PID in $PIDS ; do
-	jstack $PID > $DATE_DIR/jstack-$PID.dump 2>&1
-	echo -e ".\c"
-	jinfo $PID > $DATE_DIR/jinfo-$PID.dump 2>&1
-	echo -e ".\c"
-	jstat -gcutil $PID > $DATE_DIR/jstat-gcutil-$PID.dump 2>&1
-	echo -e ".\c"
-	jstat -gccapacity $PID > $DATE_DIR/jstat-gccapacity-$PID.dump 2>&1
-	echo -e ".\c"
-	jmap $PID > $DATE_DIR/jmap-$PID.dump 2>&1
-	echo -e ".\c"
-	jmap -heap $PID > $DATE_DIR/jmap-heap-$PID.dump 2>&1
-	echo -e ".\c"
-	jmap -histo $PID > $DATE_DIR/jmap-histo-$PID.dump 2>&1
-	echo -e ".\c"
-	if [ -r /usr/sbin/lsof ]; then
-	/usr/sbin/lsof -p $PID > $DATE_DIR/lsof-$PID.dump
-	echo -e ".\c"
-	fi
+    jstack $PID > $DATE_DIR/jstack-$PID.dump 2>&1
+    echo -e ".\c"
+    jinfo $PID > $DATE_DIR/jinfo-$PID.dump 2>&1
+    echo -e ".\c"
+    jstat -gcutil $PID > $DATE_DIR/jstat-gcutil-$PID.dump 2>&1
+    echo -e ".\c"
+    jstat -gccapacity $PID > $DATE_DIR/jstat-gccapacity-$PID.dump 2>&1
+    echo -e ".\c"
+    jmap $PID > $DATE_DIR/jmap-$PID.dump 2>&1
+    echo -e ".\c"
+    jmap -heap $PID > $DATE_DIR/jmap-heap-$PID.dump 2>&1
+    echo -e ".\c"
+    jmap -histo $PID > $DATE_DIR/jmap-histo-$PID.dump 2>&1
+    echo -e ".\c"
+    if [ -r /usr/sbin/lsof ]; then
+    /usr/sbin/lsof -p $PID > $DATE_DIR/lsof-$PID.dump
+    echo -e ".\c"
+    fi
 done
 
 if [ -r /bin/netstat ]; then

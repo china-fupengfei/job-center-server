@@ -27,7 +27,7 @@ CREATE TABLE `t_sched_job` (
   PRIMARY KEY (`id`),
   KEY `idx_name` (`name`),
   KEY `idx_modifyTime` (`modifyTime`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='任务调度表';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='调度任务表';
 
 
 DROP TABLE IF EXISTS `t_sched_log`;
@@ -48,4 +48,4 @@ CREATE TABLE `t_sched_log` (
   KEY `idx_jobId` (`jobId`),
   KEY `idx_jobName` (`jobName`),
   KEY `idx_createTime` (`createTime`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='任务调度日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='调度日志表';

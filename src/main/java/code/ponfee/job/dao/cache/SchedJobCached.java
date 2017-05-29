@@ -18,7 +18,8 @@ import code.ponfee.commons.util.ExtendedMessageFormat;
  */
 @Repository
 public class SchedJobCached {
-    private static final String KEY_PREFIX = "sched:";
+    private static final String KEY_PREFIX = "sched:"; // key prefix of job center module
+
     private static final String SCHED_IDS_KEY = KEY_PREFIX + "ids:key";
     private static final String SCHED_JOB_KEY = KEY_PREFIX + "job:#{id}";
     private static final String SCHED_SCORES_KEY = KEY_PREFIX + "scores:key";
@@ -81,17 +82,18 @@ public class SchedJobCached {
     }
 
     public long getServerRank(String server) {
-        return jedisClient.zsetOps().zrank(SCHED_SCORES_KEY, server);
+        Long rank = jedisClient.zsetOps().zrank(SCHED_SCORES_KEY, server);
+        return rank == null ? 0 : rank;
     }
 
     public boolean incrServerScore(String server, int score) {
         // 正分：服务器准备执行调度；负分：服务器已完成调度
         if (!jedisClient.keysOps().exists(SCHED_SCORES_KEY)) {
             return false;
+        } else {
+            jedisClient.zsetOps().zincrby(SCHED_SCORES_KEY, server, score);
+            return true;
         }
-
-        jedisClient.zsetOps().zincrby(SCHED_SCORES_KEY, server, score, SCHED_CACHE_TIME);
-        return true;
     }
 
     // -----------------------------手动触发----------------------------
