@@ -31,7 +31,7 @@ import code.ponfee.commons.util.SpringContextHolder;
 
 /**
  * 任务调度服务
- * @author: fupf
+ * @author fupf
  */
 @Service("schedJobService")
 public class SchedJobServiceImpl implements ISchedJobService {
@@ -232,7 +232,6 @@ public class SchedJobServiceImpl implements ISchedJobService {
 
     /**
      * 触发执行一次
-     * @author: fupf
      */
     private static final class JobTriggerOnce implements Runnable {
         private final JobExecutor executor;

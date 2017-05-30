@@ -4,7 +4,7 @@ import code.ponfee.commons.util.Networks;
 
 /**
  * 常量类
- * @author: fupf
+ * @author fupf
  */
 public final class Constants {
     public static final String IP_ADDRESS = Networks.getSiteIp();

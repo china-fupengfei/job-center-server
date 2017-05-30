@@ -4,7 +4,7 @@ import code.ponfee.job.model.SchedJob;
 
 /**
  * 任务调度处理器接口
- * @author: fupf
+ * @author fupf
  */
 public interface JobHandler {
 

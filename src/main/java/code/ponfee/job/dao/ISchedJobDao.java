@@ -10,7 +10,7 @@ import code.ponfee.commons.model.Pager;
 
 /**
  * sched job dao interface
- * @author: fupf
+ * @author fupf
  */
 public interface ISchedJobDao {
 

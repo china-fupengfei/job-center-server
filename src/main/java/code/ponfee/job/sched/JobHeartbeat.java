@@ -19,7 +19,7 @@ import code.ponfee.commons.util.SpringContextHolder;
 
 /**
  * 心跳检测中心
- * @author: fupf
+ * @author fupf
  */
 @Component
 public class JobHeartbeat {
@@ -38,7 +38,7 @@ public class JobHeartbeat {
 
     /**
      * 线程运行类
-     * @author: fupf
+     * @author fupf
      */
     private static final class HeartbeatRunner implements Runnable {
         private final ISchedJobDao schedJobDao;

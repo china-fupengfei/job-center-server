@@ -3,7 +3,7 @@ CREATE TABLE `t_sched_job` (
   `id`                int(11)        NOT NULL AUTO_INCREMENT  COMMENT '自增主键ID',
   `name`              varchar(60)    NOT NULL                 COMMENT '名称',
   `cronExpression`    varchar(255)   NOT NULL                 COMMENT 'cron表达式',
-  `handler`           text           NOT NULL                 COMMENT '任务处理者',
+  `handler`           text           NOT NULL                 COMMENT '任务处理类者（类全限定名或源代码）',
   `status`            smallint(4)    NOT NULL DEFAULT '0'     COMMENT '状态：0停止；1启动；',
   `concurrentSupport` tinyint(1)     NOT NULL DEFAULT '0'     COMMENT '是否支持并发执行：0不支持；1支持；',
   `recoverySupport`   tinyint(1)     NOT NULL DEFAULT '0'     COMMENT '是否支持恢复执行：0不支持；1支持；',

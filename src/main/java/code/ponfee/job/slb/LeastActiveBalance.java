@@ -6,7 +6,7 @@ import java.util.TreeMap;
 
 /**
  * 最少已使用法
- * @author: fupf
+ * @author fupf
  */
 public class LeastActiveBalance extends AbstractLoadBalance {
     private final TreeMap<String, Integer> servers;

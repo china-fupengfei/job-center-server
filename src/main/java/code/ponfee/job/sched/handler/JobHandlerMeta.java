@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * 任务处理器配置信息注解
- * @author: fupf
+ * @author fupf
  */
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)

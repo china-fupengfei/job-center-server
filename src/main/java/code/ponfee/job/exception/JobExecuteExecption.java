@@ -4,7 +4,7 @@ import code.ponfee.commons.exception.BasicException;
 
 /**
  * 任务执行异常
- * @author: fupf
+ * @author fupf
  */
 public class JobExecuteExecption extends BasicException {
     private static final long serialVersionUID = 2625614802822753946L;

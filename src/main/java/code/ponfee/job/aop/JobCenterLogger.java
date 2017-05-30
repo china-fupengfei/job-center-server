@@ -12,7 +12,7 @@ import code.ponfee.commons.log.LoggerAspect;
 
 /**
  * 切面日志
- * @author: fupf
+ * @author fupf
  */
 @Component
 @Aspect

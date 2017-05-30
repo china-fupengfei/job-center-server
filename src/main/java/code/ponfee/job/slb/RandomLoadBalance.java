@@ -7,7 +7,7 @@ import java.util.Random;
 
 /**
  * 随机法
- * @author: fupf
+ * @author fupf
  */
 public class RandomLoadBalance extends AbstractLoadBalance {
     private final List<String> servers;

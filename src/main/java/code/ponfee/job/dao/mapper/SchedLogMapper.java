@@ -7,7 +7,7 @@ import code.ponfee.job.model.SchedLog;
 
 /**
  * sched log mapper
- * @author: fupf
+ * @author fupf
  */
 public interface SchedLogMapper {
 

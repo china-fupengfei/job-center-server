@@ -15,7 +15,7 @@ import code.ponfee.commons.util.SpringContextHolder;
 
 /**
  * 测试调度类
- * @author: fupf
+ * @author fupf
  */
 @JobHandlerMeta("测试调度类")
 public class TesterJobHandler implements JobHandler {

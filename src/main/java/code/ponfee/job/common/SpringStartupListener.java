@@ -14,7 +14,7 @@ import code.ponfee.commons.resource.ResourcesScanner;
 
 /**
  * spring容器启动完成后执行
- * @author: fupf
+ * @author fupf
  */
 @Component
 public class SpringStartupListener implements ApplicationListener<ContextRefreshedEvent> {

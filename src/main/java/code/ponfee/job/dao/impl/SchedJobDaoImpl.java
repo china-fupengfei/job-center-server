@@ -32,7 +32,7 @@ import code.ponfee.commons.util.SpringContextHolder;
 
 /**
  * sched job dao实现类
- * @author: fupf
+ * @author fupf
  */
 @Repository
 public class SchedJobDaoImpl implements ISchedJobDao {

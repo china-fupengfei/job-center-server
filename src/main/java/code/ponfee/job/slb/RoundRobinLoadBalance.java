@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * 轮询法
- * @author: fupf
+ * @author fupf
  */
 public class RoundRobinLoadBalance extends AbstractLoadBalance {
     private final AtomicLong pos = new AtomicLong(0);

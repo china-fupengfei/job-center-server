@@ -9,7 +9,7 @@ import code.ponfee.job.model.SchedJob;
 
 /**
  * sched job mapper
- * @author: fupf
+ * @author fupf
  */
 public interface SchedJobMapper {
 

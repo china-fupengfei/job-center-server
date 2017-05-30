@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * 源地址哈希法
- * @author: fupf
+ * @author fupf
  */
 public class HashedLoadBalance extends AbstractLoadBalance {
     private final List<String> servers;

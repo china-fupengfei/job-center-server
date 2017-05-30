@@ -2,7 +2,7 @@ package code.ponfee.job.slb;
 
 /**
  * server load balance algorithm
- * @author: fupf
+ * @author fupf
  */
 public abstract class AbstractLoadBalance {
 

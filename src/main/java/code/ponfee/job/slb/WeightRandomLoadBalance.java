@@ -9,7 +9,7 @@ import java.util.Random;
 
 /**
  * 加权随机法
- * @author: fupf
+ * @author fupf
  */
 public class WeightRandomLoadBalance extends AbstractLoadBalance {
     private final List<String> servers;

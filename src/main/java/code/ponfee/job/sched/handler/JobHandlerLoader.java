@@ -6,7 +6,7 @@ import code.ponfee.commons.compile.model.JavaSource;
 
 /**
  * 任务处理类加载
- * @author: fupf
+ * @author fupf
  */
 public final class JobHandlerLoader {
 

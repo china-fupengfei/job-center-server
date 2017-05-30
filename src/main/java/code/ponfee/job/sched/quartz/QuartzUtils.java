@@ -13,7 +13,7 @@ import code.ponfee.commons.util.Dates;
 
 /**
  * quartz工具类
- * @author: fupf
+ * @author fupf
  */
 public class QuartzUtils {
 

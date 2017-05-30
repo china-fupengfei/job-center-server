@@ -22,7 +22,7 @@ import code.ponfee.commons.util.SpringContextHolder;
 
 /**
  * 调度执行器
- * @author: fupf
+ * @author fupf
  */
 @Component
 public class JobExecutor implements Job {

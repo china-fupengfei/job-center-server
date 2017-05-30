@@ -14,7 +14,7 @@ import code.ponfee.commons.util.ExtendedMessageFormat;
 
 /**
  * schedule job cached
- * @author: fupf
+ * @author fupf
  */
 @Repository
 public class SchedJobCached {
@@ -78,7 +78,7 @@ public class SchedJobCached {
 
     // -----------------------------负载均衡----------------------------
     public void setScoreServers(Map<String, Double> members) {
-        jedisClient.zsetOps().zadd(SCHED_SCORES_KEY, members, SCHED_CACHE_TIME);
+        jedisClient.zsetOps().zadd(SCHED_SCORES_KEY, members, SCHED_CACHE_TIME * 2);
     }
 
     public long getServerRank(String server) {
@@ -88,7 +88,8 @@ public class SchedJobCached {
 
     public boolean incrServerScore(String server, int score) {
         // 正分：服务器准备执行调度；负分：服务器已完成调度
-        if (!jedisClient.keysOps().exists(SCHED_SCORES_KEY)) {
+        if (/*!jedisClient.keysOps().exists(SCHED_SCORES_KEY)*/
+        jedisClient.keysOps().ttl(SCHED_SCORES_KEY) < SCHED_CACHE_TIME) {
             return false;
         } else {
             jedisClient.zsetOps().zincrby(SCHED_SCORES_KEY, server, score);

@@ -10,7 +10,7 @@ import code.ponfee.commons.constrain.MethodConstraint;
 
 /**
  * 参数校验
- * @author: fupf
+ * @author fupf
  */
 @Component
 @Aspect

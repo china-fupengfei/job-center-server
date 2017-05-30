@@ -31,7 +31,7 @@
 //
 ///**
 // * 车站接口数据爬取调度处理器
-// * @author: fupf
+// * @author fupf
 // */
 //@JobHandlerMeta(name = "车站接口数据爬取")
 //public class DepotCrawlerJobHandler implements JobHandler {
@@ -143,7 +143,7 @@
 //
 //    /**
 //     * depot job参数类
-//     * @author: fupf
+//     * @author fupf
 //     */
 //    public static class CrawlerJobParams implements Serializable {
 //        private static final long serialVersionUID = 2742712498742363661L;
@@ -169,7 +169,6 @@
 //
 //    /**
 //     * 热门线路数据拉取
-//     * @author: fupf
 //     */
 //    private static final class HotLineLoader implements Callable<List<HotLine>> {
 //        private final IDepotProxyService service;
@@ -202,7 +201,6 @@
 //
 //    /**
 //     * 车站数据爬取执行类
-//     * @author: fupf
 //     */
 //    private static final class DepotCrawlerExecutor implements Callable<String> {
 //        private static Logger logger = LoggerFactory.getLogger(DepotCrawlerExecutor.class);
