@@ -3,6 +3,7 @@ package code.ponfee.job.sched.handler;
 import code.ponfee.commons.compile.exception.CompileExprException;
 import code.ponfee.commons.compile.impl.JdkCompiler;
 import code.ponfee.commons.compile.model.JavaSource;
+import code.ponfee.commons.compile.model.JavacJavaSource;
 
 /**
  * 任务处理类加载
@@ -21,7 +22,7 @@ public final class JobHandlerLoader {
         try {
             clazz = Class.forName(handler); // 配置的是类名
         } catch (ClassNotFoundException e) {
-            JavaSource javaSource = new JavaSource(handler);
+            JavaSource javaSource = new JavacJavaSource(handler);
             try {
                 clazz = Class.forName(javaSource.getFullyQualifiedName()); // 类名加载
             } catch (ClassNotFoundException ex) {

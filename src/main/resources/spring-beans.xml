@@ -45,7 +45,7 @@
         <property name="keepAliveSeconds" value="1800" />
         <!-- 
              queueCapacity：队列最大长度 >=mainExecutor.maxSize
-             0则为无界队列（此处应为0）
+             0则为SynchronousQueue（此处应为0）
          -->
         <property name="queueCapacity" value="0" />
         <!-- 
@@ -69,5 +69,5 @@
 
 
     <!-- spring bean工具类 -->
-    <bean id="springBeanUtils" class="code.ponfee.commons.util.SpringContextHolder" />
+    <bean class="code.ponfee.commons.util.SpringContextHolder" />
 </beans>
