@@ -10,6 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import code.ponfee.commons.compile.exception.CompileExprException;
+import code.ponfee.commons.exception.ExceptionTracker;
+import code.ponfee.commons.util.SpringContextHolder;
 import code.ponfee.job.common.Constants;
 import code.ponfee.job.dao.ISchedJobDao;
 import code.ponfee.job.dao.cache.SchedJobCached;
@@ -17,8 +20,6 @@ import code.ponfee.job.exception.JobExecuteExecption;
 import code.ponfee.job.model.SchedJob;
 import code.ponfee.job.model.SchedLog;
 import code.ponfee.job.sched.handler.JobHandlerLoader;
-import code.ponfee.commons.exception.ExceptionTracker;
-import code.ponfee.commons.util.SpringContextHolder;
 
 /**
  * 调度执行器
@@ -45,7 +46,7 @@ public class JobExecutor implements Job {
                 logger.info("schedule job execute end [{}-{}]", job.getId(), job.getName());
             }
             isSuccess = true;
-        } catch (ReflectiveOperationException e) {
+        } catch (ReflectiveOperationException | CompileExprException e) {
             ex = e;
             logger.error("job handler invalid [{}-{}-{}]", job.getId(), job.getName(), job.getHandler(), e);
         } catch (JobExecuteExecption e) {

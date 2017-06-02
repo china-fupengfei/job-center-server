@@ -3,7 +3,7 @@ package code.ponfee.job.sched.handler;
 import code.ponfee.commons.compile.exception.CompileExprException;
 import code.ponfee.commons.compile.impl.JdkCompiler;
 import code.ponfee.commons.compile.model.JavaSource;
-import code.ponfee.commons.compile.model.JavacJavaSource;
+import code.ponfee.commons.compile.model.RegexJavaSource;
 
 /**
  * 任务处理类加载
@@ -17,22 +17,17 @@ public final class JobHandlerLoader {
      * @return
      * @throws ReflectiveOperationException
      */
-    public static JobHandler loadHandler(String handler) throws ReflectiveOperationException {
-        Class<?> clazz = null;
+    public static JobHandler loadHandler(String handler) throws ReflectiveOperationException, CompileExprException {
         try {
-            clazz = Class.forName(handler); // 配置的是类名
-        } catch (ClassNotFoundException e) {
-            JavaSource javaSource = new JavacJavaSource(handler);
+            JavaSource source = new RegexJavaSource(handler);
             try {
-                clazz = Class.forName(javaSource.getFullyQualifiedName()); // 类名加载
-            } catch (ClassNotFoundException ex) {
-                try {
-                    clazz = new JdkCompiler().compile(javaSource); // 编译加载
-                } catch (CompileExprException cee) {
-                    throw e;
-                }
+                //return (JobHandler) new JdkCompiler().compileForce(source).newInstance(); // 编译加载
+                return (JobHandler) new JdkCompiler().compile(source).newInstance(); // 编译加载
+            } catch (CompileExprException ex) {
+                throw ex;
             }
+        } catch (Exception e) {
+            return (JobHandler) Class.forName(handler).newInstance(); // 配置的是类名
         }
-        return (JobHandler) clazz.newInstance();
     }
 }
