@@ -7,7 +7,7 @@ CREATE TABLE `t_sched_job` (
   `status`            smallint(4)    NOT NULL DEFAULT '0'     COMMENT '状态：0停止；1启动；',
   `concurrentSupport` tinyint(1)     NOT NULL DEFAULT '0'     COMMENT '是否支持并发执行：0不支持；1支持；',
   `recoverySupport`   tinyint(1)     NOT NULL DEFAULT '0'     COMMENT '是否支持恢复执行：0不支持；1支持；',
-  `score`             smallint(4)    NOT NULL DEFAULT '1'     COMMENT '权重分数（分数越高则任务越重）',
+  `score`             smallint(4)    NOT NULL DEFAULT '1'     COMMENT '权重分数（分数越高则表示任务越重）',
   `execParams`        varchar(4000)  DEFAULT NULL             COMMENT '执行参数',
   `startTime`         datetime       DEFAULT NULL             COMMENT '任务开始时间（为空不限制）',
   `endTime`           datetime       DEFAULT NULL             COMMENT '任务结束时间（为空不限制）',
