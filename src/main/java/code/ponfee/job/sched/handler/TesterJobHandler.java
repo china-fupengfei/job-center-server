@@ -40,7 +40,7 @@ public class TesterJobHandler implements JobHandler {
     }
 
     @Override
-    public boolean verifyJobParams(Object params) {
+    public boolean verify(SchedJob job) {
         return true;
     }
 

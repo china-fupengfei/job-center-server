@@ -1,5 +1,6 @@
 package code.ponfee.job.dao.impl;
 
+import static code.ponfee.job.common.Constants.CACHE_KEY_PREFIX;
 import static code.ponfee.job.model.SchedJob.STATUS_START;
 
 import java.math.BigDecimal;
@@ -16,6 +17,12 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Repository;
 
+import code.ponfee.commons.jedis.JedisClient;
+import code.ponfee.commons.jedis.JedisLock;
+import code.ponfee.commons.model.PageHandler;
+import code.ponfee.commons.model.Pager;
+import code.ponfee.commons.util.Numbers;
+import code.ponfee.commons.util.SpringContextHolder;
 import code.ponfee.job.common.Constants;
 import code.ponfee.job.dao.ISchedJobDao;
 import code.ponfee.job.dao.cache.SchedJobCached;
@@ -23,12 +30,6 @@ import code.ponfee.job.dao.mapper.SchedJobMapper;
 import code.ponfee.job.dao.mapper.SchedLogMapper;
 import code.ponfee.job.model.SchedJob;
 import code.ponfee.job.model.SchedLog;
-import code.ponfee.commons.jedis.JedisClient;
-import code.ponfee.commons.jedis.JedisLock;
-import code.ponfee.commons.model.PageHandler;
-import code.ponfee.commons.model.Pager;
-import code.ponfee.commons.util.Numbers;
-import code.ponfee.commons.util.SpringContextHolder;
 
 /**
  * sched job dao实现类
@@ -87,7 +88,7 @@ public class SchedJobDaoImpl implements ISchedJobDao {
     public SchedJob get(int jobId) {
         SchedJob job = cached.getSchedJob(jobId);
         if (job == null) {
-            Lock lock = getLock("SchedJobDaoImpl:get:" + jobId);
+            Lock lock = prepareLock(CACHE_KEY_PREFIX + "dao-get-job:" + jobId);
             lock.lock();
             try {
                 job = cached.getSchedJob(jobId);
@@ -125,7 +126,7 @@ public class SchedJobDaoImpl implements ISchedJobDao {
     public Collection<Integer> listJobIds() {
         Collection<Integer> ids = cached.getJobIds();
         if (ids == null || ids.isEmpty()) {
-            Lock lock = getLock("SchedJobDaoImpl:listJobIds");
+            Lock lock = prepareLock(CACHE_KEY_PREFIX + "dao-list-jobs");
             lock.lock();
             try {
                 ids = cached.getJobIds();
@@ -165,7 +166,7 @@ public class SchedJobDaoImpl implements ISchedJobDao {
     @Override
     public long incrAndRank(String server, int score) {
         if (!cached.incrServerScore(server, score)) {
-            Lock lock = getLock("SchedJobDaoImpl:incrAndRank");
+            Lock lock = prepareLock(CACHE_KEY_PREFIX + "dao-server-rank");
             lock.lock();
             try {
                 if (!cached.incrServerScore(server, score)) {
@@ -181,11 +182,11 @@ public class SchedJobDaoImpl implements ISchedJobDao {
     }
 
     /**
-     * 获取redis分布式锁
+     * redis分布式锁
      * @param key
      * @return
      */
-    private Lock getLock(String key) {
+    private Lock prepareLock(String key) {
         return new JedisLock(SpringContextHolder.getBean(JedisClient.class), key, 5);
     }
 
@@ -214,7 +215,7 @@ public class SchedJobDaoImpl implements ISchedJobDao {
     @Override
     public boolean recordLog(List<SchedLog> logs) {
         if (logs == null || logs.isEmpty()) return false;
-        return logMapper.record(logs) == logs.size();
+        return logMapper.insert(logs) == logs.size();
     }
 
     @Override

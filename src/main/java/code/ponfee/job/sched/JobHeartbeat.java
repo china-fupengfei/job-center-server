@@ -1,7 +1,7 @@
 package code.ponfee.job.sched;
 
+import static code.ponfee.commons.util.QuartzUtils.getNextExecTime;
 import static code.ponfee.job.common.Constants.IP_ADDRESS;
-import static code.ponfee.job.sched.quartz.QuartzUtils.getNextExecTime;
 
 import java.util.Date;
 
@@ -12,10 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import code.ponfee.commons.util.SpringContextHolder;
 import code.ponfee.job.common.Constants;
 import code.ponfee.job.dao.ISchedJobDao;
 import code.ponfee.job.model.SchedJob;
-import code.ponfee.commons.util.SpringContextHolder;
 
 /**
  * 心跳检测中心

@@ -15,9 +15,9 @@ public interface JobHandler {
     void handle(SchedJob job);
 
     /**
-     * 任务参数校验
-     * @param params
+     * 任务校验
+     * @param job
      * @return
      */
-    boolean verifyJobParams(Object params);
+    boolean verify(SchedJob job);
 }

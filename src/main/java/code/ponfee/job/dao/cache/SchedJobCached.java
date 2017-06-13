@@ -1,5 +1,7 @@
 package code.ponfee.job.dao.cache;
 
+import static code.ponfee.job.common.Constants.CACHE_KEY_PREFIX;
+
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -8,9 +10,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Repository;
 
-import code.ponfee.job.model.SchedJob;
 import code.ponfee.commons.jedis.JedisClient;
 import code.ponfee.commons.util.ExtendedMessageFormat;
+import code.ponfee.job.model.SchedJob;
 
 /**
  * schedule job cached
@@ -18,13 +20,11 @@ import code.ponfee.commons.util.ExtendedMessageFormat;
  */
 @Repository
 public class SchedJobCached {
-    private static final String KEY_PREFIX = "sched:"; // key prefix of job center module
-
-    private static final String SCHED_IDS_KEY = KEY_PREFIX + "ids:key";
-    private static final String SCHED_JOB_KEY = KEY_PREFIX + "job:#{id}";
-    private static final String SCHED_SCORES_KEY = KEY_PREFIX + "scores:key";
-    private static final String TRIGGER_JOB_KEY = KEY_PREFIX + "trigger:#{jobId}";
-    private static final int SCHED_CACHE_TIME = 600; // 10分钟缓存时间
+    private static final String SCHED_IDS_KEY = CACHE_KEY_PREFIX + "ids:key";
+    private static final String SCHED_JOB_KEY = CACHE_KEY_PREFIX + "job:#{id}";
+    private static final String SCHED_SCORES_KEY = CACHE_KEY_PREFIX + "scores:key";
+    private static final String TRIGGER_JOB_KEY = CACHE_KEY_PREFIX + "trigger:#{jobId}";
+    private static final int SCHED_CACHE_TIME = 900; // 15分钟缓存时间
 
     private @Resource JedisClient jedisClient;
 

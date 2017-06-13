@@ -12,7 +12,7 @@ public class Provider {
     private static ClassPathXmlApplicationContext context;
 
     public static void main(String[] args) {
-        context = new ClassPathXmlApplicationContext(new String[] { "META-INF/spring/job-center-provider.xml" });
+        context = new ClassPathXmlApplicationContext(new String[] { "META-INF/spring/*.xml" });
         context.start();
         System.out.println("==========================调度中心已启动=========================");
         while (true) {

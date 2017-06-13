@@ -83,8 +83,8 @@ public class JobExecutor implements Job {
             Date sched = job.getLastSchedTime();
 
             String exception = ExceptionTracker.peekStackTrace(ex);
-            if (exception != null && exception.length() > Constants.MAX_EXCEPTION_SIZE) {
-                exception = exception.substring(0, Constants.MAX_EXCEPTION_SIZE);
+            if (exception != null && exception.length() > Constants.MAX_ERROR_LENGTH) {
+                exception = exception.substring(0, Constants.MAX_ERROR_LENGTH);
             }
 
             try {

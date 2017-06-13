@@ -11,7 +11,7 @@ import code.ponfee.job.model.SchedLog;
  */
 public interface SchedLogMapper {
 
-    int record(List<SchedLog> logs);
+    int insert(List<SchedLog> logs);
 
     List<SchedLog> query4list(Map<String, ?> params);
 }

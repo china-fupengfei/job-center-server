@@ -7,7 +7,7 @@
         schedTime,execStartTime,execEndTime,exception,createTime
     </sql>
 
-    <insert id="record">
+    <insert id="insert">
         INSERT INTO t_sched_log (
             execServer,isSuccess,isManualTrigger,jobId,jobName,execParams,
             schedTime,execStartTime,execEndTime,exception,createTime

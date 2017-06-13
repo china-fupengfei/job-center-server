@@ -1,6 +1,6 @@
 package code.ponfee.job.service.impl;
 
-import static code.ponfee.job.sched.quartz.QuartzUtils.getNextExecTime;
+import static code.ponfee.commons.util.QuartzUtils.getNextExecTime;
 
 import java.util.Date;
 import java.util.Map;
@@ -9,15 +9,6 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import code.ponfee.job.common.JobResultCode;
-import code.ponfee.job.dao.ISchedJobDao;
-import code.ponfee.job.dao.cache.SchedJobCached;
-import code.ponfee.job.model.SchedJob;
-import code.ponfee.job.model.SchedLog;
-import code.ponfee.job.sched.JobExecutor;
-import code.ponfee.job.sched.handler.JobHandler;
-import code.ponfee.job.sched.handler.JobHandlerLoader;
-import code.ponfee.job.service.ISchedJobService;
 import code.ponfee.commons.constrain.Constraint;
 import code.ponfee.commons.constrain.Constraint.Tense;
 import code.ponfee.commons.constrain.Constraints;
@@ -28,6 +19,15 @@ import code.ponfee.commons.model.ResultCode;
 import code.ponfee.commons.util.Dates;
 import code.ponfee.commons.util.Numbers;
 import code.ponfee.commons.util.SpringContextHolder;
+import code.ponfee.job.common.JobResultCode;
+import code.ponfee.job.dao.ISchedJobDao;
+import code.ponfee.job.dao.cache.SchedJobCached;
+import code.ponfee.job.model.SchedJob;
+import code.ponfee.job.model.SchedLog;
+import code.ponfee.job.sched.JobExecutor;
+import code.ponfee.job.sched.handler.JobHandler;
+import code.ponfee.job.sched.handler.JobHandlerLoader;
+import code.ponfee.job.service.ISchedJobService;
 
 /**
  * 任务调度服务
@@ -88,7 +88,7 @@ public class SchedJobServiceImpl implements ISchedJobService {
 
     @LogAnnotation
     @Constraints({
-        @Constraint(index = 0,min=1),
+        @Constraint(index = 0, min = 1),
         @Constraint(index = 1, min = 1)
     })
     public @Override Result<Void> delJob(int jobId, int version) {
@@ -150,7 +150,7 @@ public class SchedJobServiceImpl implements ISchedJobService {
 
     @LogAnnotation
     @Constraints({
-        @Constraint(index = 0, min=1),
+        @Constraint(index = 0, min = 1),
         @Constraint(index = 1, min = 1)
     })
     public @Override Result<Void> stopJob(int jobId, int version) {
@@ -160,7 +160,7 @@ public class SchedJobServiceImpl implements ISchedJobService {
     }
 
     @LogAnnotation
-    @Constraints({ @Constraint(min=1) })
+    @Constraints({ @Constraint(min = 1) })
     public @Override Result<Void> triggerJob(int jobId) {
         SchedJob job = schedJobDao.get(jobId);
         if (job == null) return Result.failure(JobResultCode.JOB_NOT_FOUND);
@@ -188,7 +188,7 @@ public class SchedJobServiceImpl implements ISchedJobService {
     private <T> Result<T> verifyJob(SchedJob job) {
         try {
             JobHandler handler = JobHandlerLoader.loadHandler(job.getHandler());
-            if (!handler.verifyJobParams(job.getExecParams())) {
+            if (!handler.verify(job)) {
                 return Result.failure(JobResultCode.INVALID_EXEC_PARAMS);
             }
         } catch (Exception e) {
