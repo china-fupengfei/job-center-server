@@ -3,7 +3,7 @@ package code.ponfee.job.slb;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * 随机法
@@ -18,7 +18,7 @@ public class RandomLoadBalance extends AbstractLoadBalance {
 
     @Override
     public String select() {
-        return servers.get(new Random().nextInt(servers.size()));
+        return servers.get(ThreadLocalRandom.current().nextInt(servers.size()));
     }
 
 }

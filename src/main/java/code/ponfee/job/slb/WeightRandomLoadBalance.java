@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * 加权随机法
@@ -26,7 +26,7 @@ public class WeightRandomLoadBalance extends AbstractLoadBalance {
 
     @Override
     public String select() {
-        return servers.get(new Random().nextInt(servers.size()));
+        return servers.get(ThreadLocalRandom.current().nextInt(servers.size()));
     }
 
 }

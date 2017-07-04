@@ -3,15 +3,15 @@ package code.ponfee.job.sched.handler;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import code.ponfee.job.model.SchedJob;
 import code.ponfee.commons.util.Dates;
 import code.ponfee.commons.util.SpringContextHolder;
+import code.ponfee.job.model.SchedJob;
 
 /**
  * 测试调度类
@@ -57,7 +57,7 @@ public class TesterJobHandler implements JobHandler {
             String s = job.getName() + "[" + t.getThreadGroup().getName() + "-" + t.getId() + "-" + t.getName() + "]";
             System.out.println(s + " start " + Dates.format(new Date()));
             try {
-                Thread.sleep(30000 + new Random().nextInt(60000));
+                Thread.sleep(30000 + ThreadLocalRandom.current().nextInt(60000));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
