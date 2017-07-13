@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
 import code.ponfee.commons.jedis.JedisClient;
 import code.ponfee.commons.jedis.JedisLock;
 import code.ponfee.commons.model.PageHandler;
-import code.ponfee.commons.model.Pager;
+import code.ponfee.commons.model.Pagination;
 import code.ponfee.commons.util.Numbers;
 import code.ponfee.commons.util.SpringContextHolder;
 import code.ponfee.job.common.Constants;
@@ -117,9 +117,9 @@ public class SchedJobDaoImpl implements ISchedJobDao {
     }
 
     @Override
-    public Pager<SchedJob> queryJobsForPage(Map<String, ?> params) {
+    public Pagination<SchedJob> queryJobsForPage(Map<String, ?> params) {
         PageHandler.NORMAL.handle(params);
-        return new Pager<>(jobMapper.query4list(params));
+        return new Pagination<>(jobMapper.query4list(params));
     }
 
     @Override
@@ -219,9 +219,9 @@ public class SchedJobDaoImpl implements ISchedJobDao {
     }
 
     @Override
-    public Pager<SchedLog> queryLogsForPage(Map<String, ?> params) {
+    public Pagination<SchedLog> queryLogsForPage(Map<String, ?> params) {
         PageHandler.NORMAL.handle(params);
-        return new Pager<>(logMapper.query4list(params));
+        return new Pagination<>(logMapper.query4list(params));
     }
 
 }

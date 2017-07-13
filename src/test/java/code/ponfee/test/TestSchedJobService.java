@@ -11,17 +11,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import code.ponfee.job.model.SchedJob;
-import code.ponfee.job.sched.handler.TesterJobHandler;
-import code.ponfee.job.service.ISchedJobService;
 import code.ponfee.commons.json.Jsons;
 import code.ponfee.commons.model.Result;
 import code.ponfee.commons.util.MavenProjects;
 import code.ponfee.commons.util.Streams;
+import code.ponfee.job.model.SchedJob;
+import code.ponfee.job.sched.handler.TesterJobHandler;
+import code.ponfee.job.service.ISchedJobService;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @ContextConfiguration(locations = { "classpath:dubbo-consumer.xml" })
 public class TestSchedJobService {
 
