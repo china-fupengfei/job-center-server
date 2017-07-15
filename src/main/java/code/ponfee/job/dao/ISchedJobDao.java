@@ -6,7 +6,7 @@ import java.util.Map;
 
 import code.ponfee.job.model.SchedJob;
 import code.ponfee.job.model.SchedLog;
-import code.ponfee.commons.model.Pagination;
+import code.ponfee.commons.model.Page;
 
 /**
  * sched job dao interface
@@ -24,7 +24,7 @@ public interface ISchedJobDao {
 
     boolean delete(int jobId, int version);
 
-    Pagination<SchedJob> queryJobsForPage(Map<String, ?> params);
+    Page<SchedJob> queryJobsForPage(Map<String, ?> params);
 
     Collection<Integer> listJobIds();
 
@@ -39,5 +39,5 @@ public interface ISchedJobDao {
 
     boolean recordLog(List<SchedLog> logs);
 
-    Pagination<SchedLog> queryLogsForPage(Map<String, ?> params);
+    Page<SchedLog> queryLogsForPage(Map<String, ?> params);
 }

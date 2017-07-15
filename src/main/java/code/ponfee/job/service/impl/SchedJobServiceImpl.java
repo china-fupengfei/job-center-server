@@ -13,7 +13,7 @@ import code.ponfee.commons.constrain.Constraint;
 import code.ponfee.commons.constrain.Constraint.Tense;
 import code.ponfee.commons.constrain.Constraints;
 import code.ponfee.commons.log.LogAnnotation;
-import code.ponfee.commons.model.Pagination;
+import code.ponfee.commons.model.Page;
 import code.ponfee.commons.model.Result;
 import code.ponfee.commons.model.ResultCode;
 import code.ponfee.commons.util.Dates;
@@ -41,7 +41,7 @@ public class SchedJobServiceImpl implements ISchedJobService {
 
     @LogAnnotation
     @Constraints({ @Constraint(field = "status", notNull = false, series = { 0, 1 }) })
-    public @Override Result<Pagination<SchedJob>> queryJobsForPage(Map<String, ?> params) {
+    public @Override Result<Page<SchedJob>> queryJobsForPage(Map<String, ?> params) {
         return Result.success(schedJobDao.queryJobsForPage(params));
     }
 
@@ -176,7 +176,7 @@ public class SchedJobServiceImpl implements ISchedJobService {
 
     @LogAnnotation
     @Constraints({ @Constraint(field = "beginTime", notNull = false, tense = Tense.PAST) })
-    public @Override Result<Pagination<SchedLog>> queryLogsForPage(Map<String, ?> params) {
+    public @Override Result<Page<SchedLog>> queryLogsForPage(Map<String, ?> params) {
         if (Dates.clockdiff((Date) params.get("beginTime"), (Date) params.get("endTime")) <= 0) {
             return Result.failure(ResultCode.ILLEGAL_ARGUMENTS.getCode(), "结束时间必须大于开始时间");
         }
