@@ -93,7 +93,7 @@ public class SchedJobServiceImpl implements ISchedJobService {
     })
     public @Override Result<Void> delJob(int jobId, int version) {
         if (schedJobDao.delete(jobId, version)) return Result.success();
-        else return Result.failure(ResultCode.OCCUR_CONFLICT);
+        else return Result.failure(ResultCode.OPS_CONFLICT);
     }
 
     @LogAnnotation
@@ -134,7 +134,7 @@ public class SchedJobServiceImpl implements ISchedJobService {
         this.setDefault(job);
 
         if (schedJobDao.update(job)) return Result.success();
-        else return Result.failure(ResultCode.OCCUR_CONFLICT);
+        else return Result.failure(ResultCode.OPS_CONFLICT);
     }
 
     @LogAnnotation
@@ -178,7 +178,7 @@ public class SchedJobServiceImpl implements ISchedJobService {
     @Constraints({ @Constraint(field = "beginTime", notNull = false, tense = Tense.PAST) })
     public @Override Result<Page<SchedLog>> queryLogsForPage(Map<String, ?> params) {
         if (Dates.clockdiff((Date) params.get("beginTime"), (Date) params.get("endTime")) <= 0) {
-            return Result.failure(ResultCode.ILLEGAL_ARGUMENTS.getCode(), "结束时间必须大于开始时间");
+            return Result.failure(ResultCode.ILLEGAL_ARGS.getCode(), "结束时间必须大于开始时间");
         }
 
         return Result.success(schedJobDao.queryLogsForPage(params));
@@ -199,7 +199,7 @@ public class SchedJobServiceImpl implements ISchedJobService {
 
     private Result<Void> toggleJob(SchedJob job) {
         if (schedJobDao.toggle(job)) return Result.success();
-        else return Result.failure(ResultCode.OCCUR_CONFLICT);
+        else return Result.failure(ResultCode.OPS_CONFLICT);
     }
 
     private void setDefault(SchedJob job) {

@@ -25,7 +25,7 @@ public class JobCenterLogger extends LoggerAspect {
     }
     
     protected void log(LogInfo logInfo) {
-        System.out.println("[LOG-INFO] "+Jsons.NORMAL.stringify(logInfo));
+        System.out.println("[log-info] "+Jsons.NORMAL.stringify(logInfo));
     }
 
 }

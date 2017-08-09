@@ -27,7 +27,7 @@ public class TesterJobHandler implements JobHandler {
         List<Future<Boolean>> calls = new ArrayList<>();
         System.out.println("=======job start " + Dates.format(new Date()) + "  " + job.getName());
         for (int i = 0; i < size; i++) {
-            calls.add(task.submit(new DepotCrawlerExecutor(job)));
+            calls.add(task.submit(new TestExecutor(job)));
         }
         for (Future<Boolean> future : calls) {
             try {
@@ -44,10 +44,10 @@ public class TesterJobHandler implements JobHandler {
         return true;
     }
 
-    private static final class DepotCrawlerExecutor implements Callable<Boolean> {
+    private static final class TestExecutor implements Callable<Boolean> {
         private SchedJob job;
 
-        private DepotCrawlerExecutor(SchedJob job) {
+        private TestExecutor(SchedJob job) {
             this.job = job;
         }
 
