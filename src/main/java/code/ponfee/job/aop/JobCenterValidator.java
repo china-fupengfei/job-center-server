@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 import code.ponfee.commons.constrain.Constraints;
-import code.ponfee.commons.constrain.MethodConstraint;
+import code.ponfee.commons.constrain.MethodValidator;
 
 /**
  * 参数校验
@@ -14,7 +14,7 @@ import code.ponfee.commons.constrain.MethodConstraint;
  */
 @Component
 @Aspect
-public class JobCenterValidator extends MethodConstraint {
+public class JobCenterValidator extends MethodValidator {
 
     @Override
     @Around(value = "execution(public * code.ponfee.job.service.impl.*Impl.*(..)) && @annotation(cst)", argNames = "pjp,cst")

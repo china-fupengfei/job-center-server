@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import code.ponfee.commons.json.Jsons;
 import code.ponfee.commons.log.LogAnnotation;
 import code.ponfee.commons.log.LogInfo;
-import code.ponfee.commons.log.LoggerAspect;
+import code.ponfee.commons.log.LogRecorder;
 
 /**
  * 切面日志
@@ -16,7 +16,7 @@ import code.ponfee.commons.log.LoggerAspect;
  */
 @Component
 @Aspect
-public class JobCenterLogger extends LoggerAspect {
+public class JobCenterLogger extends LogRecorder {
 
     @Around(value = "execution(public * code.ponfee.job.service.impl.*Impl.*(..)) && @annotation(log)", argNames = "pjp,log")
     @Override
