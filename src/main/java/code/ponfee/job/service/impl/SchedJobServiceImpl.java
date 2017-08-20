@@ -63,7 +63,8 @@ public class SchedJobServiceImpl implements ISchedJobService {
         Result<Integer> result = verifyJob(job);
         if (result != null) return result;
 
-        Date nextSchedTime = getNextSchedTime(job.getCronExpression(), job.getStartTime(), job.getEndTime());
+        Date nextSchedTime = getNextSchedTime(job.getCronExpression(), 
+                                              job.getStartTime(), job.getEndTime());
         if (nextSchedTime == null) {
             return Result.failure(JobResultCode.INVALID_CRON_EXP);
         }
@@ -117,14 +118,15 @@ public class SchedJobServiceImpl implements ISchedJobService {
         Result<Void> result = verifyJob(job);
         if (result != null) return result;
 
-        SchedJob _job = schedJobDao.get(job.getId());
-        if (_job == null) {
+        SchedJob job0 = schedJobDao.get(job.getId());
+        if (job0 == null) {
             return Result.failure(JobResultCode.JOB_NOT_FOUND);
         }
 
         // 判断时间表达式是否被修改
-        if (!_job.getCronExpression().equals(job.getCronExpression())) {
-            Date nextSchedTime = getNextSchedTime(job.getCronExpression(), job.getStartTime(), job.getEndTime());
+        if (!job0.getCronExpression().equals(job.getCronExpression())) {
+            Date nextSchedTime = getNextSchedTime(job.getCronExpression(), 
+                                                  job.getStartTime(), job.getEndTime());
             if (nextSchedTime == null) {
                 return Result.failure(JobResultCode.INVALID_CRON_EXP);
             }
