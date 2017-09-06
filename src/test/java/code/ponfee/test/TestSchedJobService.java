@@ -13,10 +13,10 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import code.ponfee.commons.io.Files;
 import code.ponfee.commons.json.Jsons;
 import code.ponfee.commons.model.Result;
 import code.ponfee.commons.util.MavenProjects;
-import code.ponfee.commons.util.Streams;
 import code.ponfee.job.model.SchedJob;
 import code.ponfee.job.sched.handler.TesterJobHandler;
 import code.ponfee.job.service.ISchedJobService;
@@ -55,7 +55,7 @@ public class TestSchedJobService {
             SchedJob job = new SchedJob();
             job.setName("repairBug" + i);
             job.setCronExpression("0 */2 * * * ?");
-            job.setHandler(Streams.file2string(MavenProjects.getMainJavaFile(TesterJobHandler.class)));
+            job.setHandler(Files.toString(MavenProjects.getMainJavaFile(TesterJobHandler.class)));
             job.setStatus(1);
             job.setCreatorId(1L);
             job.setCreatorName("username");

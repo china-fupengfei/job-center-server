@@ -16,9 +16,8 @@ import code.ponfee.commons.constrain.MethodValidator;
 @Aspect
 public class JobCenterValidator extends MethodValidator {
 
-    @Override
     @Around(value = "execution(public * code.ponfee.job.service.impl.*Impl.*(..)) && @annotation(cst)", argNames = "pjp,cst")
-    public Object constrain(ProceedingJoinPoint pjp, Constraints cst) throws Throwable {
+    public @Override Object constrain(ProceedingJoinPoint pjp, Constraints cst) throws Throwable {
         return super.constrain(pjp, cst);
     }
 

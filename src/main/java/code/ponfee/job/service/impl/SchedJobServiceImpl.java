@@ -205,7 +205,7 @@ public class SchedJobServiceImpl implements ISchedJobService {
     }
 
     private void setDefault(SchedJob job) {
-        job.setScore(Numbers.range(job.getScore(), 1, 100));
+        job.setScore(Numbers.bounds(job.getScore(), 1, 100));
         if (job.getConcurrentSupport() == null) {
             job.setConcurrentSupport(true);
         }

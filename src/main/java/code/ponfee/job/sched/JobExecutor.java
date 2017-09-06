@@ -66,7 +66,7 @@ public class JobExecutor implements Job {
                 }
             } else {
                 try {
-                    schedJobDao.doneExecution(job); // 完成执行
+                    schedJobDao.doneExecution(job); // 执行完成
                 } catch (Exception err) {
                     logger.error("job done execution error [{}-{}]", job.getId(), job.getName(), err);
                 }

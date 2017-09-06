@@ -4,6 +4,8 @@ import static code.ponfee.commons.util.QuartzUtils.getNextExecTime;
 import static code.ponfee.job.common.Constants.IP_ADDRESS;
 
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.annotation.Resource;
 
@@ -23,17 +25,20 @@ import code.ponfee.job.model.SchedJob;
  */
 @Component
 public class JobHeartbeat {
+
     private static Logger logger = LoggerFactory.getLogger(JobHeartbeat.class);
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
 
     @Resource
     private ISchedJobDao schedJobDao;
+
 
     /**
      * 心跳频率：1秒/次
      */
     @Scheduled(fixedRate = 1000)
     public void run() {
-        new Thread(new HeartbeatRunner(schedJobDao)).start();
+        EXECUTOR_SERVICE.submit(new HeartbeatRunner(schedJobDao));
     }
 
     /**

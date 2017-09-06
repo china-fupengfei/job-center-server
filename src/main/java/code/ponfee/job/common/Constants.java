@@ -32,9 +32,4 @@ public final class Constants {
         JOB_HANDLER_CONFIGS = builder.build();
     }
 
-    public static void main(String[] args) {
-        System.out.println(JOB_HANDLER_CONFIGS);
-        JOB_HANDLER_CONFIGS.put("a", "b");
-    }
-
 }
