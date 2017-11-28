@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import code.ponfee.commons.compile.exception.CompileExprException;
-import code.ponfee.commons.exception.ExceptionTracker;
+import code.ponfee.commons.exception.Throwables;
 import code.ponfee.commons.util.SpringContextHolder;
 import code.ponfee.job.common.Constants;
 import code.ponfee.job.dao.ISchedJobDao;
@@ -82,7 +82,7 @@ public class JobExecutor implements Job {
             String params = job.getExecParams();
             Date sched = job.getLastSchedTime();
 
-            String exception = ExceptionTracker.peekStackTrace(ex);
+            String exception = Throwables.getStackTrace(ex);
             if (exception != null && exception.length() > Constants.MAX_ERROR_LENGTH) {
                 exception = exception.substring(0, Constants.MAX_ERROR_LENGTH);
             }

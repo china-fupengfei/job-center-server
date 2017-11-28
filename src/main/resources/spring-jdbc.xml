@@ -2,17 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xmlns:p="http://www.springframework.org/schema/p"
-    xmlns:context="http://www.springframework.org/schema/context"
     xmlns:aop="http://www.springframework.org/schema/aop" 
     xmlns:tx="http://www.springframework.org/schema/tx"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
-
-    <!-- 激活annotation功能 -->
-    <context:annotation-config />
-    <context:spring-configured />
 
     <bean id="jobDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
@@ -45,7 +39,7 @@
 
     <!-- mybatis文件配置，扫描所有mapper文件 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
-        p:dataSource-ref="jobDataSource" p:configLocation="classpath:/mybatis.xml"
+        p:dataSource-ref="jobDataSource" p:configLocation="classpath:/mybatis-conf.xml"
         p:mapperLocations="classpath*:code/ponfee/job/dao/xml/*.xml" p:typeAliasesPackage="code.ponfee.job.model" />
 
     <!-- spring与mybatis整合配置，扫描所有dao -->
