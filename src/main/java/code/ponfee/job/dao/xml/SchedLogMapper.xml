@@ -3,14 +3,14 @@
 
 <mapper namespace="code.ponfee.job.dao.mapper.SchedLogMapper">
     <sql id="baseColumns">
-        id,execServer,isSuccess,isManualTrigger,jobId,jobName,execParams,
-        schedTime,execStartTime,execEndTime,exception,createTime
+        id,exec_server,is_success,is_manual_trigger,job_id,job_name,exec_params,
+        sched_time,exec_start_time,exec_end_time,exception,create_time
     </sql>
 
     <insert id="insert">
         INSERT INTO t_sched_log (
-            execServer,isSuccess,isManualTrigger,jobId,jobName,execParams,
-            schedTime,execStartTime,execEndTime,exception,createTime
+            exec_server,is_success,is_manual_trigger,job_id,job_name,exec_params,
+            sched_time,exec_start_time,exec_end_time,exception,create_time
         ) VALUES 
         <foreach collection="list" item="o" index="index" separator=",">
             (#{o.execServer},#{o.isSuccess},#{o.isManualTrigger},#{o.jobId},#{o.jobName},#{o.execParams},
@@ -21,14 +21,14 @@
     <select id="query4list" resultType="schedLog">
         SELECT <include refid="baseColumns"/> FROM t_sched_log 
         <where>
-            <if test="execServer!=null">execServer=#{execServer}</if>
-            <if test="isSuccess!=null">AND isSuccess=#{isSuccess}</if>
-            <if test="isManualTrigger!=null">AND isManualTrigger=#{isManualTrigger}</if>
-            <if test="jobId!=null">AND jobId=#{jobId}</if>
-            <if test="jobName!=null">AND jobName LIKE '%${jobName}%'</if>
-            <if test="beginTime!=null">AND createTime>=#{beginTime}</if>
-            <if test="endTime!=null">AND createTime&lt;=#{endTime}</if>
+            <if test="execServer!=null">exec_server=#{execServer}</if>
+            <if test="isSuccess!=null">AND is_success=#{isSuccess}</if>
+            <if test="isManualTrigger!=null">AND is_manual_trigger=#{isManualTrigger}</if>
+            <if test="jobId!=null">AND job_id=#{jobId}</if>
+            <if test="jobName!=null">AND job_name LIKE '%${jobName}%'</if>
+            <if test="beginTime!=null">AND create_time>=#{beginTime}</if>
+            <if test="endTime!=null">AND create_time&lt;=#{endTime}</if>
         </where>
-        ORDER BY createTime DESC 
+        ORDER BY create_time DESC 
     </select>
 </mapper>

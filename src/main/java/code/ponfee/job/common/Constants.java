@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMap.Builder;
 
 import code.ponfee.commons.reflect.ClassUtils;
 import code.ponfee.commons.resource.ResourceScanner;
@@ -25,7 +24,7 @@ public final class Constants {
     public static final Map<String, String> JOB_HANDLER_CONFIGS;
     static {
         Set<Class<?>> classes = new ResourceScanner("code.ponfee.job").scan4class(new Class[] { JobHandlerMeta.class });
-        Builder<String, String> builder = ImmutableMap.builder();
+        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
         for (Class<?> clazz : classes) {
             builder.put(ClassUtils.getClassName(clazz), clazz.getAnnotation(JobHandlerMeta.class).value());
         }

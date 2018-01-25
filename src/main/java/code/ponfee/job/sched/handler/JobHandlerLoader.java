@@ -16,8 +16,10 @@ public final class JobHandlerLoader {
      * @param handler
      * @return
      * @throws ReflectiveOperationException
+     * @throws CompileExprException
      */
-    public static JobHandler loadHandler(String handler) throws ReflectiveOperationException, CompileExprException {
+    public static JobHandler loadHandler(String handler) 
+        throws ReflectiveOperationException, CompileExprException {
         try {
             JavaSource source = new RegexJavaSource(handler);
             try {

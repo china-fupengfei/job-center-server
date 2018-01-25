@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Repository;
 
 import code.ponfee.commons.jedis.JedisClient;
-import code.ponfee.commons.util.ExtendedMessageFormat;
+import code.ponfee.commons.util.MessageFormats;
 import code.ponfee.job.model.SchedJob;
 
 /**
@@ -62,17 +62,17 @@ public class SchedJobCached {
 
     // -----------------------------schedule job----------------------------
     public void setSchedJob(SchedJob job) {
-        String key = ExtendedMessageFormat.formatPair(SCHED_JOB_KEY, "id", job.getId());
+        String key = MessageFormats.format(SCHED_JOB_KEY, job.getId());
         jedisClient.valueOps().setObject(key.getBytes(), job, SCHED_CACHE_TIME);
     }
 
     public void delSchedJob(int jobId) {
-        String key = ExtendedMessageFormat.formatPair(SCHED_JOB_KEY, "id", jobId);
+        String key = MessageFormats.format(SCHED_JOB_KEY, jobId);
         jedisClient.keysOps().del(key);
     }
 
     public SchedJob getSchedJob(int jobId) {
-        String key = ExtendedMessageFormat.formatPair(SCHED_JOB_KEY, "id", jobId);
+        String key = MessageFormats.format(SCHED_JOB_KEY, jobId);
         return jedisClient.valueOps().getObject(key.getBytes(), SchedJob.class);
     }
 
@@ -99,12 +99,12 @@ public class SchedJobCached {
 
     // -----------------------------手动触发----------------------------
     public boolean todoTrigger(int jobId) {
-        String key = ExtendedMessageFormat.formatPair(TRIGGER_JOB_KEY, "jobId", jobId);
+        String key = MessageFormats.format(TRIGGER_JOB_KEY, jobId);
         return jedisClient.valueOps().incrBy(key, 1, 3600) == 1;
     }
 
     public void doneTrigger(int jobId) {
-        String key = ExtendedMessageFormat.formatPair(TRIGGER_JOB_KEY, "jobId", jobId);
+        String key = MessageFormats.format(TRIGGER_JOB_KEY, jobId);
         jedisClient.keysOps().del(key);
     }
 

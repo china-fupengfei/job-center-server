@@ -1,6 +1,5 @@
 package code.ponfee.job.dao.impl;
 
-import static code.ponfee.job.common.Constants.CACHE_KEY_PREFIX;
 import static code.ponfee.job.model.SchedJob.STATUS_START;
 
 import java.math.BigDecimal;
@@ -37,6 +36,8 @@ import code.ponfee.job.model.SchedLog;
  */
 @Repository
 public class SchedJobDaoImpl implements ISchedJobDao {
+
+    private static final String KEY_PREFIX = Constants.CACHE_KEY_PREFIX + "dao:";
 
     @Resource
     private SchedJobMapper jobMapper;
@@ -88,7 +89,7 @@ public class SchedJobDaoImpl implements ISchedJobDao {
     public SchedJob get(int jobId) {
         SchedJob job = cached.getSchedJob(jobId);
         if (job == null) {
-            Lock lock = prepareLock(CACHE_KEY_PREFIX + "dao-get-job:" + jobId);
+            Lock lock = prepareLock(KEY_PREFIX + "get:" + jobId);
             lock.lock();
             try {
                 job = cached.getSchedJob(jobId);
@@ -126,13 +127,15 @@ public class SchedJobDaoImpl implements ISchedJobDao {
     public Collection<Integer> listJobIds() {
         Collection<Integer> ids = cached.getJobIds();
         if (ids == null || ids.isEmpty()) {
-            Lock lock = prepareLock(CACHE_KEY_PREFIX + "dao-list-jobs");
+            Lock lock = prepareLock(KEY_PREFIX + "list-job-ids");
             lock.lock();
             try {
                 ids = cached.getJobIds();
                 if (ids == null || ids.isEmpty()) {
                     ids = jobMapper.listJobIds(SchedJob.STATUS_START);
-                    if (ids.isEmpty()) ids.add(Constants.PLACEHOLDER); // 添加占位符
+                    if (ids.isEmpty()) {
+                        ids.add(Constants.PLACEHOLDER); // 添加占位符
+                    }
                     cached.setJobIds(ids.toArray(new Integer[ids.size()]));
                 }
             } finally {
@@ -148,14 +151,18 @@ public class SchedJobDaoImpl implements ISchedJobDao {
     @Override
     public boolean tryAcquire(SchedJob job) {
         boolean flag = jobMapper.tryAcquire(job) == 1;
-        if (flag) cached.delSchedJob(job.getId());
+        if (flag) {
+            cached.delSchedJob(job.getId());
+        }
         return flag;
     }
 
     @Override
     public boolean doneExecution(SchedJob job) {
         boolean flag = jobMapper.doneExecution(job) == 1;
-        if (flag) cached.delSchedJob(job.getId());
+        if (flag) {
+            cached.delSchedJob(job.getId());
+        }
         return flag;
     }
 
@@ -166,7 +173,7 @@ public class SchedJobDaoImpl implements ISchedJobDao {
     @Override
     public long incrAndRank(String server, int score) {
         if (!cached.incrServerScore(server, score)) {
-            Lock lock = prepareLock(CACHE_KEY_PREFIX + "dao-server-rank");
+            Lock lock = prepareLock(KEY_PREFIX + "incr-and-rank");
             lock.lock();
             try {
                 if (!cached.incrServerScore(server, score)) {
@@ -197,10 +204,14 @@ public class SchedJobDaoImpl implements ISchedJobDao {
      */
     private Map<String, Double> convert(List<Map<String, Object>> list) {
         Map<String, Double> result = new HashMap<>();
-        if (list == null) return result;
+        if (list == null) {
+            return result;
+        }
         for (Map<String, Object> map : list) {
             BigDecimal b = (BigDecimal) map.get("scores");
-            if (b == null) b = new BigDecimal(0);
+            if (b == null) {
+                b = new BigDecimal(0);
+            }
             result.put((String) map.get("server"), b.doubleValue());
         }
         return result;
@@ -214,7 +225,9 @@ public class SchedJobDaoImpl implements ISchedJobDao {
 
     @Override
     public boolean recordLog(List<SchedLog> logs) {
-        if (logs == null || logs.isEmpty()) return false;
+        if (logs == null || logs.isEmpty()) {
+            return false;
+        }
         return logMapper.insert(logs) == logs.size();
     }
 

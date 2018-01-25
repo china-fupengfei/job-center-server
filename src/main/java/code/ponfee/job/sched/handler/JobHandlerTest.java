@@ -18,7 +18,7 @@ import code.ponfee.job.model.SchedJob;
  * @author fupf
  */
 @JobHandlerMeta("测试调度类")
-public class TesterJobHandler implements JobHandler {
+public class JobHandlerTest implements JobHandler {
 
     @Override
     public void handle(SchedJob job) {

@@ -56,11 +56,15 @@ public class JobHeartbeat {
         public void run() {
             // 负载均衡控制(least active load balance)
             // 查看排名：有序集成员按score值递增(从小到大)顺序排列，排名以0为底，score值最小的成员排名为0
-            if (schedJobDao.incrAndRank(IP_ADDRESS, 0) > 0) return;
+            if (schedJobDao.incrAndRank(IP_ADDRESS, 0) > 0) {
+                return;
+            }
 
             for (int jobId : schedJobDao.listJobIds()) {
                 // 占位符
-                if (Constants.PLACEHOLDER.equals(jobId)) continue;
+                if (Constants.PLACEHOLDER.equals(jobId)) {
+                    continue;
+                }
 
                 // 获取调度实体
                 SchedJob job = schedJobDao.get(jobId);
@@ -115,22 +119,22 @@ public class JobHeartbeat {
          * @param  job
          * @return boolean
          */
-        private boolean tryAcquire(SchedJob job, Date now) {
+        private boolean tryAcquire(SchedJob job, Date date) {
             Date schedTime = job.getNextSchedTime();
-            if (schedTime.after(now)) {
+            if (schedTime.after(date)) {
                 // 先更新，但不执行
                 job.setIsExecuting(false);
                 job.setExecingTimeMillis(null);
             } else {
                 job.setIsExecuting(true); // 执行
-                job.setExecingTimeMillis(now.getTime());
+                job.setExecingTimeMillis(date.getTime());
                 job.setLastSchedTime(schedTime); // 本次执行后变为上一次执行时间
                 job.setLastSchedServer(IP_ADDRESS); // 执行服务器
                 job.setNextSchedTime(getNextExecTime(job.getCronExpression(), schedTime)); // 更新下一次执行时间点
             }
 
             // 先获取锁再判断时间
-            return schedJobDao.tryAcquire(job) && !schedTime.after(now);
+            return schedJobDao.tryAcquire(job) && !schedTime.after(date);
         }
 
         /**

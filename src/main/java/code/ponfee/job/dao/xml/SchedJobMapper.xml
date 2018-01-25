@@ -3,16 +3,16 @@
 <mapper namespace="code.ponfee.job.dao.mapper.SchedJobMapper">
 
     <sql id="baseColumns">
-        id,name,cronExpression,handler,status,concurrentSupport,recoverySupport,score,execParams,
-        startTime,endTime,remark,isExecuting,execingTimeMillis,lastSchedTime,lastSchedServer,
-        nextSchedTime,creatorId,creatorName,createTime,modifierId,modifierName,modifyTime,version
+        id,name,cron_expression,handler,status,concurrent_support,recovery_support,score,exec_params,
+        start_time,end_time,remark,is_executing,execing_time_millis,last_sched_time,last_sched_server,
+        next_sched_time,creator_id,creator_name,create_time,modifier_id,modifier_name,modify_time,version
     </sql>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_sched_job (
-            name,cronExpression,handler,status,concurrentSupport,recoverySupport,
-            score,execParams,startTime,endTime,nextSchedTime,remark,creatorId,
-            creatorName,createTime,modifierId,modifierName,modifyTime,version
+            name,cron_expression,handler,status,concurrent_support,recovery_support,
+            score,exec_params,start_time,end_time,next_sched_time,remark,creator_id,
+            creator_name,create_time,modifier_id,modifier_name,modify_time,version
         ) VALUES (
             #{name},#{cronExpression},#{handler},#{status},#{concurrentSupport},#{recoverySupport},
             #{score},#{execParams},#{startTime},#{endTime},#{nextSchedTime},#{remark},#{creatorId},
@@ -22,10 +22,10 @@
 
     <update id="update">
         UPDATE t_sched_job 
-        SET name=#{name}, cronExpression=#{cronExpression}, handler=#{handler}, status=#{status}, score=#{score}, 
-            concurrentSupport=#{concurrentSupport}, recoverySupport=#{recoverySupport}, execParams=#{execParams}, 
-            startTime=#{startTime}, endTime=#{endTime}, nextSchedTime=#{nextSchedTime}, remark=#{remark}, 
-            modifierId=#{modifierId}, modifierName=#{modifierName}, modifyTime=#{modifyTime}, version=version+1 
+        SET name=#{name}, cron_expression=#{cronExpression}, handler=#{handler}, status=#{status}, score=#{score}, 
+            concurrent_support=#{concurrentSupport}, recovery_support=#{recoverySupport}, exec_params=#{execParams}, 
+            start_time=#{startTime}, end_time=#{endTime}, next_sched_time=#{nextSchedTime}, remark=#{remark}, 
+            modifier_id=#{modifierId}, modifier_name=#{modifierName}, modify_time=#{modifyTime}, version=version+1 
         WHERE id=#{id} AND version=#{version} 
     </update>
 
@@ -50,7 +50,7 @@
             <if test="jobName!=null">AND name LIKE '%${jobName}%'</if>
             <if test="status!=null">AND status=#{status}</if>
         </where>
-        ORDER BY modifyTime DESC
+        ORDER BY modify_time DESC
     </select>
 
     <!-- 获取job id list -->
@@ -64,25 +64,25 @@
     <!-- 尝试获取锁 -->
     <update id="tryAcquire">
         UPDATE t_sched_job 
-        SET isExecuting=#{isExecuting}, lastSchedTime=#{lastSchedTime}, lastSchedServer=#{lastSchedServer}, 
-            nextSchedTime=#{nextSchedTime}, execingTimeMillis=#{execingTimeMillis}, version=version+1 
+        SET is_executing=#{isExecuting}, last_sched_time=#{lastSchedTime}, last_sched_server=#{lastSchedServer}, 
+            next_sched_time=#{nextSchedTime}, execing_time_millis=#{execingTimeMillis}, version=version+1 
         WHERE id=#{id} AND status=1 AND version=#{version} 
         <!-- 修改：由程序来处理死锁问题（此处只能通过版本号CAS机制去竞争锁，不能用isExecuting=0条件）
-             AND ( concurrentSupport=0 OR isExecuting=0 
-                   OR TIMESTAMPDIFF(HOUR,execingTimeMillis,#{execingTimeMillis})>3
+             AND ( concurrent_support=0 OR is_executing=0 
+                   OR TIMESTAMPDIFF(HOUR,execing_time_millis,#{execingTimeMillis})>3
                  ) 
         -->
     </update>
 
     <!-- 完成调试执行 -->
     <update id="doneExecution">
-        UPDATE t_sched_job SET isExecuting=0, execingTimeMillis=null, version=version+1 
-        WHERE id=#{id} AND isExecuting=1 AND execingTimeMillis=#{execingTimeMillis} 
+        UPDATE t_sched_job SET is_executing=0, execing_time_millis=null, version=version+1 
+        WHERE id=#{id} AND is_executing=1 AND execing_time_millis=#{execingTimeMillis} 
     </update>
     
     <!-- 收集各服务器调度负载数据 -->
     <select id="collectServersLoadBalance" resultType="map">
-        SELECT lastSchedServer server, SUM(score) scores FROM t_sched_job 
-        WHERE isExecuting=1 AND status=1 GROUP BY lastSchedServer 
+        SELECT last_sched_server server, SUM(score) scores FROM t_sched_job 
+        WHERE is_executing=1 AND status=1 GROUP BY last_sched_server 
     </select>
 </mapper>

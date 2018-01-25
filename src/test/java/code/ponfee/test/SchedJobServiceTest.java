@@ -18,13 +18,13 @@ import code.ponfee.commons.json.Jsons;
 import code.ponfee.commons.model.Result;
 import code.ponfee.commons.util.MavenProjects;
 import code.ponfee.job.model.SchedJob;
-import code.ponfee.job.sched.handler.TesterJobHandler;
+import code.ponfee.job.sched.handler.JobHandlerTest;
 import code.ponfee.job.service.ISchedJobService;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 @RunWith(SpringRunner.class)
 @ContextConfiguration(locations = { "classpath:dubbo-consumer.xml" })
-public class TestSchedJobService {
+public class SchedJobServiceTest {
 
     @Resource
     private ISchedJobService schedJobService;
@@ -40,7 +40,7 @@ public class TestSchedJobService {
         SchedJob job = new SchedJob();
         job.setName("调度测试类");
         job.setCronExpression("0 */1 * * * ?");
-        job.setHandler("code.ponfee.job.sched.handler.TesterJobHandler");
+        job.setHandler("code.ponfee.job.sched.handler.JobHandlerTest");
         job.setExecParams("{\"days\":3}");
         job.setStatus(1);
         job.setCreatorId(1L);
@@ -55,7 +55,7 @@ public class TestSchedJobService {
             SchedJob job = new SchedJob();
             job.setName("repairBug" + i);
             job.setCronExpression("0 */2 * * * ?");
-            job.setHandler(Files.toString(MavenProjects.getMainJavaFile(TesterJobHandler.class)));
+            job.setHandler(Files.toString(MavenProjects.getMainJavaFile(JobHandlerTest.class)));
             job.setStatus(1);
             job.setCreatorId(1L);
             job.setCreatorName("username");
