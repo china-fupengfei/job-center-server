@@ -243,7 +243,7 @@ public class SchedJobServiceImpl implements ISchedJobService {
             this.executor = executor;
             job.setLastSchedTime(null); // 为空来标示手动触发：执行完不更新
             job.setNextSchedTime(null);
-            job.setExecingTimeMillis(-1L);
+            job.setExecTimeMillis(-1L);
             this.job = job;
         }
 

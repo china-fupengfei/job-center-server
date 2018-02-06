@@ -13,7 +13,7 @@ CREATE TABLE `t_sched_job` (
   `end_time`             datetime       DEFAULT NULL             COMMENT '任务结束时间（为空不限制）',
   `remark`               varchar(255)   DEFAULT NULL             COMMENT '备注',
   `is_executing`         tinyint(1)     NOT NULL DEFAULT '0'     COMMENT '是否正在执行：0否；1是；',
-  `execing_time_millis`  bigint(20)     DEFAULT NULL             COMMENT '本次执行时间（毫秒）',
+  `exec_time_millis`     bigint(20)     DEFAULT NULL             COMMENT '本次执行时间（毫秒）',
   `last_sched_time`      datetime       DEFAULT NULL             COMMENT '上一次的调度时间',
   `last_sched_server`    varchar(128)   DEFAULT NULL             COMMENT '上一次的调度服务器IP',
   `next_sched_time`      datetime       DEFAULT NULL             COMMENT '下一次的调度时间',

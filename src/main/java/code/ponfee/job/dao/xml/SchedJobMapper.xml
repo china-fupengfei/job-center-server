@@ -4,7 +4,7 @@
 
     <sql id="baseColumns">
         id,name,cron_expression,handler,status,concurrent_support,recovery_support,score,exec_params,
-        start_time,end_time,remark,is_executing,execing_time_millis,last_sched_time,last_sched_server,
+        start_time,end_time,remark,is_executing,exec_time_millis,last_sched_time,last_sched_server,
         next_sched_time,creator_id,creator_name,create_time,modifier_id,modifier_name,modify_time,version
     </sql>
 
@@ -22,10 +22,11 @@
 
     <update id="update">
         UPDATE t_sched_job 
-        SET name=#{name}, cron_expression=#{cronExpression}, handler=#{handler}, status=#{status}, score=#{score}, 
-            concurrent_support=#{concurrentSupport}, recovery_support=#{recoverySupport}, exec_params=#{execParams}, 
-            start_time=#{startTime}, end_time=#{endTime}, next_sched_time=#{nextSchedTime}, remark=#{remark}, 
-            modifier_id=#{modifierId}, modifier_name=#{modifierName}, modify_time=#{modifyTime}, version=version+1 
+        SET name=#{name}, cron_expression=#{cronExpression}, handler=#{handler}, status=#{status}, 
+            score=#{score}, concurrent_support=#{concurrentSupport}, recovery_support=#{recoverySupport}, 
+            exec_params=#{execParams}, start_time=#{startTime}, end_time=#{endTime}, 
+            next_sched_time=#{nextSchedTime}, remark=#{remark}, modifier_id=#{modifierId}, 
+            modifier_name=#{modifierName}, modify_time=#{modifyTime}, version=version+1 
         WHERE id=#{id} AND version=#{version} 
     </update>
 
@@ -38,7 +39,7 @@
     <delete id="delete">
         DELETE FROM t_sched_job WHERE id=#{jobId} AND version=#{version} 
     </delete>
-    
+
     <select id="get" resultType="schedJob">
         SELECT <include refid="baseColumns"/> FROM t_sched_job WHERE id=#{jobId} 
     </select>
@@ -64,22 +65,23 @@
     <!-- 尝试获取锁 -->
     <update id="tryAcquire">
         UPDATE t_sched_job 
-        SET is_executing=#{isExecuting}, last_sched_time=#{lastSchedTime}, last_sched_server=#{lastSchedServer}, 
-            next_sched_time=#{nextSchedTime}, execing_time_millis=#{execingTimeMillis}, version=version+1 
+        SET is_executing=#{isExecuting}, last_sched_time=#{lastSchedTime}, 
+            last_sched_server=#{lastSchedServer}, next_sched_time=#{nextSchedTime}, 
+            exec_time_millis=#{execTimeMillis}, version=version+1 
         WHERE id=#{id} AND status=1 AND version=#{version} 
-        <!-- 修改：由程序来处理死锁问题（此处只能通过版本号CAS机制去竞争锁，不能用isExecuting=0条件）
+        <!-- 修改：由程序来处理死锁问题（此处只能通过版本号CAS机制去竞争锁，不能用is_executing=0条件）
              AND ( concurrent_support=0 OR is_executing=0 
-                   OR TIMESTAMPDIFF(HOUR,execing_time_millis,#{execingTimeMillis})>3
+                   OR TIMESTAMPDIFF(HOUR,exec_time_millis,#{execTimeMillis})>3
                  ) 
         -->
     </update>
 
     <!-- 完成调试执行 -->
     <update id="doneExecution">
-        UPDATE t_sched_job SET is_executing=0, execing_time_millis=null, version=version+1 
-        WHERE id=#{id} AND is_executing=1 AND execing_time_millis=#{execingTimeMillis} 
+        UPDATE t_sched_job SET is_executing=0, exec_time_millis=null, version=version+1 
+        WHERE id=#{id} AND is_executing=1 AND exec_time_millis=#{execTimeMillis} 
     </update>
-    
+
     <!-- 收集各服务器调度负载数据 -->
     <select id="collectServersLoadBalance" resultType="map">
         SELECT last_sched_server server, SUM(score) scores FROM t_sched_job 

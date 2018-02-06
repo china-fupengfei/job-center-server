@@ -101,7 +101,7 @@ public class JobHeartbeat {
 
                 // 判断是否需要做串行执行
                 if (!job.getConcurrentSupport() && job.getIsExecuting()
-                    && (now.getTime() - job.getExecingTimeMillis()) < clockdiff(job.getLastSchedTime(), job.getNextSchedTime())) {
+                    && (now.getTime() - job.getExecTimeMillis()) < clockdiff(job.getLastSchedTime(), job.getNextSchedTime())) {
                     continue; // 如果 [不支持并发] && [正在执行] && [还未到达防止死锁的超时时间] 则跳过
                 }
 
@@ -124,10 +124,10 @@ public class JobHeartbeat {
             if (schedTime.after(date)) {
                 // 先更新，但不执行
                 job.setIsExecuting(false);
-                job.setExecingTimeMillis(null);
+                job.setExecTimeMillis(null);
             } else {
                 job.setIsExecuting(true); // 执行
-                job.setExecingTimeMillis(date.getTime());
+                job.setExecTimeMillis(date.getTime());
                 job.setLastSchedTime(schedTime); // 本次执行后变为上一次执行时间
                 job.setLastSchedServer(IP_ADDRESS); // 执行服务器
                 job.setNextSchedTime(getNextExecTime(job.getCronExpression(), schedTime)); // 更新下一次执行时间点
