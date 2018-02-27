@@ -24,7 +24,7 @@ public class JobCenterLogger extends LogRecorder {
     }
 
     /**
-     * 日志自行处理
+     * 日志自定义处理
      */
     protected void log(LogInfo logInfo) {
         System.out.println("[log-info] " + ObjectUtils.toString(logInfo));
