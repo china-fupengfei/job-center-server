@@ -180,7 +180,7 @@ public class SchedJobServiceImpl implements ISchedJobService {
     @Constraints({ @Constraint(field = "beginTime", notNull = false, tense = Tense.PAST) })
     public @Override Result<Page<SchedLog>> queryLogsForPage(Map<String, ?> params) {
         if (Dates.clockdiff((Date) params.get("beginTime"), (Date) params.get("endTime")) <= 0) {
-            return Result.failure(ResultCode.ILLEGAL_ARGS.getCode(), "结束时间必须大于开始时间");
+            return Result.failure(ResultCode.BAD_REQUEST, "结束时间必须大于开始时间");
         }
 
         return Result.success(schedJobDao.queryLogsForPage(params));

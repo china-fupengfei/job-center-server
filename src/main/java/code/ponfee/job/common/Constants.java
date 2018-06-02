@@ -17,7 +17,7 @@ import code.ponfee.job.sched.handler.JobHandlerMeta;
 @SuppressWarnings("unchecked")
 public final class Constants {
     public static final String CACHE_KEY_PREFIX = "sched:"; // cache key prefix of job center
-    public static final String IP_ADDRESS = Networks.getSiteIp();
+    public static final String IP_ADDRESS = Networks.getHostIp();
     public static final Integer PLACEHOLDER = Integer.MIN_VALUE;
     public static final int MAX_ERROR_LENGTH = 8000;
 
