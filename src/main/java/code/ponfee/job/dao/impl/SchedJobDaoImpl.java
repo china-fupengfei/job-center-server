@@ -178,7 +178,7 @@ public class SchedJobDaoImpl implements ISchedJobDao {
             try {
                 if (!cached.incrServerScore(server, score)) {
                     Map<String, Double> map = convert(jobMapper.collectServersLoadBalance());
-                    map.put(server, Numbers.add(map.get(server), (double) score));
+                    map.put(server, Numbers.sum(map.get(server), (double) score));
                     cached.setScoreServers(map);
                 }
             } finally {

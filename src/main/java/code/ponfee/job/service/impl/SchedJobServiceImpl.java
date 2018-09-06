@@ -46,19 +46,17 @@ public class SchedJobServiceImpl implements ISchedJobService {
     }
 
     @LogAnnotation
-    @Constraints({
-        @Constraint(field = "name", notBlank = true, maxLen = 255),
-        @Constraint(field = "cronExpression", notBlank = true, maxLen = 255),
-        @Constraint(field = "handler", notBlank = true),
-        @Constraint(field = "status", series = { 0, 1 }),
-        @Constraint(field = "score", notNull = false, min = 0, max = 100),
-        @Constraint(field = "execParams", notNull = false, maxLen = 4000),
-        @Constraint(field = "startTime", notNull = false, tense = Tense.FUTURE),
-        @Constraint(field = "endTime", notNull = false, tense = Tense.FUTURE),
-        @Constraint(field = "remark", notNull = false, maxLen = 255),
-        @Constraint(field = "creatorId", min = 1),
-        @Constraint(field = "creatorName", notBlank = true, maxLen = 60)
-    })
+    @Constraint(field = "name", notBlank = true, maxLen = 255)
+    @Constraint(field = "cronExpression", notBlank = true, maxLen = 255)
+    @Constraint(field = "handler", notBlank = true)
+    @Constraint(field = "status", series = { 0, 1 })
+    @Constraint(field = "score", notNull = false, min = 0, max = 100)
+    @Constraint(field = "execParams", notNull = false, maxLen = 4000)
+    @Constraint(field = "startTime", notNull = false, tense = Tense.FUTURE)
+    @Constraint(field = "endTime", notNull = false, tense = Tense.FUTURE)
+    @Constraint(field = "remark", notNull = false, maxLen = 255)
+    @Constraint(field = "creatorId", min = 1)
+    @Constraint(field = "creatorName", notBlank = true, maxLen = 60)
     public @Override Result<Integer> addJob(SchedJob job) {
         Result<Integer> result = verifyJob(job);
         if (result != null) return result;
@@ -88,31 +86,27 @@ public class SchedJobServiceImpl implements ISchedJobService {
     }
 
     @LogAnnotation
-    @Constraints({
-        @Constraint(index = 0, min = 1),
-        @Constraint(index = 1, min = 1)
-    })
+    @Constraint(index = 0, min = 1)
+    @Constraint(index = 1, min = 1)
     public @Override Result<Void> delJob(int jobId, int version) {
         if (schedJobDao.delete(jobId, version)) return Result.success();
         else return Result.failure(ResultCode.OPS_CONFLICT);
     }
 
     @LogAnnotation
-    @Constraints({
-        @Constraint(field = "id", min = 1),
-        @Constraint(field = "name", notBlank = true, maxLen = 255),
-        @Constraint(field = "cronExpression", notBlank = true, maxLen = 255),
-        @Constraint(field = "handler", notBlank = true),
-        @Constraint(field = "status", series = { 0, 1 }),
-        @Constraint(field = "score", notNull = false, min = 0, max = 100),
-        @Constraint(field = "execParams", notNull = false, maxLen = 4000),
-        @Constraint(field = "startTime", notNull = false, tense = Tense.FUTURE),
-        @Constraint(field = "endTime", notNull = false, tense = Tense.FUTURE),
-        @Constraint(field = "remark", notNull = false, maxLen = 255),
-        @Constraint(field = "modifierId", min = 1),
-        @Constraint(field = "modifierName", notBlank = true, maxLen = 60),
-        @Constraint(field = "version", min = 1)
-    })
+    @Constraint(field = "id", min = 1)
+    @Constraint(field = "name", notBlank = true, maxLen = 255)
+    @Constraint(field = "cronExpression", notBlank = true, maxLen = 255)
+    @Constraint(field = "handler", notBlank = true)
+    @Constraint(field = "status", series = { 0, 1 })
+    @Constraint(field = "score", notNull = false, min = 0, max = 100)
+    @Constraint(field = "execParams", notNull = false, maxLen = 4000)
+    @Constraint(field = "startTime", notNull = false, tense = Tense.FUTURE)
+    @Constraint(field = "endTime", notNull = false, tense = Tense.FUTURE)
+    @Constraint(field = "remark", notNull = false, maxLen = 255)
+    @Constraint(field = "modifierId", min = 1)
+    @Constraint(field = "modifierName", notBlank = true, maxLen = 60)
+    @Constraint(field = "version", min = 1)
     public @Override Result<Void> updJob(SchedJob job) {
         // 参数校验
         Result<Void> result = verifyJob(job);
@@ -140,10 +134,8 @@ public class SchedJobServiceImpl implements ISchedJobService {
     }
 
     @LogAnnotation
-    @Constraints({
-        @Constraint(index = 0, notBlank = true),
-        @Constraint(index = 1, min = 1)
-    })
+    @Constraint(index = 0, notBlank = true)
+    @Constraint(index = 1, min = 1)
     public @Override Result<Void> startJob(int jobId, int version) {
         SchedJob job = new SchedJob(jobId, version);
         job.setStatus(SchedJob.STATUS_START);
@@ -151,10 +143,8 @@ public class SchedJobServiceImpl implements ISchedJobService {
     }
 
     @LogAnnotation
-    @Constraints({
-        @Constraint(index = 0, min = 1),
-        @Constraint(index = 1, min = 1)
-    })
+    @Constraint(index = 0, min = 1)
+    @Constraint(index = 1, min = 1)
     public @Override Result<Void> stopJob(int jobId, int version) {
         SchedJob job = new SchedJob(jobId, version);
         job.setStatus(SchedJob.STATUS_STOP);
@@ -215,7 +205,7 @@ public class SchedJobServiceImpl implements ISchedJobService {
     }
 
     /**
-     * 鲰下次调度时间
+     * 获取下次调度时间
      * @param cronExp
      * @param startTime
      * @param endTime

@@ -89,7 +89,7 @@ public class SchedJobCached {
     public boolean incrServerScore(String server, int score) {
         // 正分：服务器准备执行调度；负分：服务器已完成调度
         if (/*!jedisClient.keysOps().exists(SCHED_SCORES_KEY)*/
-        jedisClient.keysOps().ttl(SCHED_SCORES_KEY) < SCHED_CACHE_TIME) {
+            jedisClient.keysOps().ttl(SCHED_SCORES_KEY) < SCHED_CACHE_TIME) {
             return false;
         } else {
             jedisClient.zsetOps().zincrby(SCHED_SCORES_KEY, server, score);
