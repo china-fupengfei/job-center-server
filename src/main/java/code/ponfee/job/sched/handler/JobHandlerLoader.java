@@ -22,12 +22,8 @@ public final class JobHandlerLoader {
         throws ReflectiveOperationException, CompileExprException {
         try {
             JavaSource source = new RegexJavaSource(handler);
-            try {
-                //return (JobHandler) new JdkCompiler().compileForce(source).newInstance(); // 编译加载
-                return (JobHandler) new JdkCompiler().compile(source).newInstance(); // 编译加载
-            } catch (CompileExprException ex) {
-                throw ex;
-            }
+            // compileForce，编译加载
+            return (JobHandler) new JdkCompiler().compile(source).newInstance();
         } catch (Exception e) {
             return (JobHandler) Class.forName(handler).newInstance(); // 配置的是类名
         }

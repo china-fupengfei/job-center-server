@@ -81,10 +81,14 @@ public class JobHeartbeat {
                 if (job.getNextSchedTime() == null) {
                     // 获取基准时间点
                     Date begin = null;
-                    if (!job.getRecoverySupport() || job.getLastSchedTime() == null) {
-                        begin = now; // 不支持恢复执行或从未执行
-                    } else {
-                        begin = job.getLastSchedTime();
+                    if (job.getRecoverySupport()) { // support recovery
+                        begin = (job.getLastSchedTime() != null) 
+                              ? job.getLastSchedTime() 
+                              : (job.getStartTime() != null) 
+                              ? job.getStartTime() 
+                              : now;
+                    } else { // cannot support recovery
+                        begin = now;
                     }
 
                     // 获取下一次的执行时间点
